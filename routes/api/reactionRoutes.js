@@ -5,7 +5,7 @@ const {
     createReaction,
     updateReaction,
     deleteReaction
-} = require('../../controllers/reactionsController.js');
+} = require('../../controllers/reactionController.js');
 
 // route for /api/reactions
 router.route('/').get(getReactions).post(createReaction);

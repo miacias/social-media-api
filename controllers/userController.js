@@ -13,3 +13,24 @@ const { User, Reaction } = require('../models');
 // get, post, put, delete thoughts
 
 // post, delete user from friend list
+
+module.exports = {
+    getUsers(req, res) {
+
+    },
+    getSingleUser(req, res) {
+        
+    },
+    createUser(req, res) {
+        
+    },
+    deleteUser(req, res) {
+        
+    },
+    addThought(req, res) {
+        
+    },
+    removeThought(req, res) {
+        
+    }
+};

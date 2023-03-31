@@ -1,19 +1,25 @@
-const { Schema, Types } = require('mongoose');
+const { Schema, model } = require('mongoose');
+const reactionSchema = require('./Reaction.js');
 
 const thoughtSchema = new Schema({
-    thoughtId: {
-        type: Schema.Types.ObjectId,
-        default: () => new Types.ObjectId()
-    },
-    thoughtContent: {
+    thoughtText: {
         type: String,
         required: true,
-        minlength: 4
+        minLength: 1,
+        maxLength: 280
     },
     createdAt: {
         type: Date,
-        default: Date.now
-    }
+        default: Date.now,
+        get: (timestamp) => { // need to change format of timestamp
+            return new Date(timestamp);
+        }
+    },
+    username: {
+        type: String,
+        required: true
+    },
+    reactions: [reactionSchema]
 },
     {
         toJSON: {
@@ -23,4 +29,12 @@ const thoughtSchema = new Schema({
     }
 );
 
-module.exports = thoughtSchema;
+// calculates total reactions list number
+thoughtSchema.virtual('reactionCount', get(function() {
+    return this.reactions.length;
+}))
+
+// compiles a Thought model based on the schema
+const Thought = model('thought', thoughtSchema);
+
+module.exports = Thought;
