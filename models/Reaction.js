@@ -20,8 +20,12 @@ const reactionSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now,
-        get: (timestamp) => { // need to change format of timestamp
-            return new Date(timestamp);
+        get: (date) => {
+            const timestamp = new Intl.DateTimeFormat("en", {
+                timeStyle: "short",
+                dateStyle: "medium"
+            }).format(date);
+            return timestamp;
         }
     },
 },

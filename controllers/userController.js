@@ -1,6 +1,6 @@
 // MongoDB-Mongoose ObjectId() method: convert string to ObjectId
 const { ObjectId } = require('mongoose').Types;
-const { User, Reaction } = require('../models');
+const { User, Thought, Reaction } = require('../models');
 
 // aggregate function: gets total number of users
 // const totalUsers = async () =>
@@ -15,22 +15,59 @@ const { User, Reaction } = require('../models');
 // post, delete user from friend list
 
 module.exports = {
-    getUsers(req, res) {
-
+    async getUsers(req, res) {
+        console.log('get users controller')
+        try {
+            const users = await User.find();
+            if (users) {
+                res.status(200).json(users);
+            }
+        } catch (err) {
+            console.log(err);
+            res.status(500).json(err);
+        }
     },
+    // getUsers(req, res) {
+    //     User.find()
+    //       .then((users) => res.json(users))
+    //       .catch((err) => res.status(500).json(err));
+    //   },
     getSingleUser(req, res) {
-        
+        User.findOne({_id: ObjectId(req.params.id)}, (err, result) => {
+            if (result) {
+                res.status(200).json(result);
+            } else {
+                console.log('error:', err);
+                res.status(500).json(err);
+            }
+        });
     },
-    createUser(req, res) {
-        
+    async createUser(req, res) {
+        try {
+            const newUser = new User(
+                {
+                    username: req.body.username,
+                    email: req.body.email
+                });
+            await newUser.save();
+            if (newUser) {
+                res.status(200).json(newUser);
+            }
+        } catch (err) {
+            console.log(err);
+            res.status(500).json(err, {message: 'Unable to create new user. Please try again.'});
+        }
+    },
+    updateUser(req, res) {
+
     },
     deleteUser(req, res) {
         
     },
-    addThought(req, res) {
+    addFriend(req, res) {
         
     },
-    removeThought(req, res) {
+    removeFriend(req, res) {
         
     }
 };

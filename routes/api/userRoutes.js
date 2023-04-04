@@ -3,10 +3,11 @@ const {
     getUsers,
     getSingleUser,
     createUser,
-    deleteUser,
-    addThought,
-    removeThought
-} = require('../../controllers/userController');
+    updateUser,
+    deleteUser, // bonus: remove associated Thoughts when deleted
+    addFriend,
+    removeFriend
+} = require('../../controllers/userController.js');
 
 // route for /api/users
 router.route('/').get(getUsers).post(createUser);
@@ -15,9 +16,13 @@ router.route('/').get(getUsers).post(createUser);
 router.route('/:userId').get(getSingleUser).delete(deleteUser);
 
 // route for /api/users/:userId/thoughts
-router.route('/:userId/thoughts').post(addThought);
+// router.route('/:userId/thoughts').post(addThought);
 
 // route for /api/users/:userId/thoughts/:thoughtId
-router.route('/:userId/thoughts/:thoughtId').delete(removeThought);
+// router.route('/:userId/thoughts/:thoughtId').delete(removeThought);
+
+// BONUS
+// route for /api/users/:userId/friends/:friendId
+// router.route('/:userId').get(getSingleUser).post(createUser).delete(deleteUser);
 
 module.exports = router;

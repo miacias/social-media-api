@@ -11,8 +11,12 @@ const thoughtSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now,
-        get: (timestamp) => { // need to change format of timestamp
-            return new Date(timestamp);
+        get: (date) => {
+            const timestamp = new Intl.DateTimeFormat("en", {
+                timeStyle: "short",
+                dateStyle: "medium"
+            }).format(date);
+            return timestamp;
         }
     },
     username: {
@@ -24,15 +28,16 @@ const thoughtSchema = new Schema({
     {
         toJSON: {
             getters: true,
+            virtuals: true
         },
         id: false,
     }
 );
 
 // calculates total reactions list number
-thoughtSchema.virtual('reactionCount', get(function() {
+thoughtSchema.virtual('reactionCount').get(function () {
     return this.reactions.length;
-}))
+});
 
 // compiles a Thought model based on the schema
 const Thought = model('thought', thoughtSchema);
