@@ -42,7 +42,19 @@ module.exports = {
     },
     async updateThought(req, res) {
         try {
-
+            const updatedThought = await Thought.findOneAndUpdate({
+                _id: ObjectId(req.params.thoughtId)
+            },
+            {
+                thoughtText: req.body.thoughtText,
+                username: req.body.username
+            },
+            {
+                new: true
+            });
+            if (updatedThought) {
+                return res.status(200).json(updatedThought);
+            }
         } catch (err) {
             console.log(err);
             res.status(500).json(err); 
@@ -50,7 +62,10 @@ module.exports = {
     },
     async deleteThought(req, res) {
         try {
-
+            const deletedThought = await Thought.findOneAndDelete({_id: ObjectId(req.params.thoughtId)}, { rawResult: true });
+            if (deletedThought) {
+                return res.status(200).json(deletedThought);
+            }
         } catch (err) {
             console.log(err);
             res.status(500).json(err); 
