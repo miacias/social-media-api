@@ -35,14 +35,17 @@ const userSchema = new Schema(
         toJSON: {
             getters: true,
             virtuals: true,
-        }
+        },
+        id: false
     }
 );
 
 // calculates total friends list number
 // acts as a virtual column but not stored directly in the schema
 userSchema.virtual('friendCount').get(function () {
-    return this.friends.length;
+    if (userSchema.friends) {
+        return this.friends.length;
+    }
 });
 
 // compiles a User model based on the schema

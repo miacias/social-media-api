@@ -32,7 +32,15 @@ module.exports = {
                 username: req.body.username
             });
             await newThought.save();
-            if (newThought) {
+            const userThought = await User.findOneAndUpdate({
+                username: req.body.username
+            },
+            {
+                $addToSet: {
+                    thoughts: newThought._id
+                }
+            });
+            if (newThought && userThought) {
                 return res.status(200).json(newThought);
             }
         } catch (err) {
@@ -69,6 +77,46 @@ module.exports = {
         } catch (err) {
             console.log(err);
             res.status(500).json(err); 
+        }
+    },
+    async createReaction(req, res) {
+        try {
+            const newReaction =  await Thought.findOneAndUpdate({
+                _id: ObjectId(req.params.thoughtId)
+            },
+            {
+                $addToSet: {
+                    reactions: {
+                        reactionBody: req.body.reactionBody,
+                        username: req.body.username
+                    }
+                }
+            });
+            if (newReaction) {
+                return res.status(200).json(newReaction);
+            }
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json(err);
+        }
+    },
+    async deleteReaction(req, res) {
+        try {
+            const deletedReaction = await Thought.findOneAndUpdate({
+                _id: ObjectId(req.params.thoughtId)
+            },
+            {
+                $pull: { reactions: req.params.reactionId}
+            },
+            {
+                new: true
+            });
+            if (deletedReaction) {
+                return res.status(200).json(deletedReaction);
+            }
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json(err);
         }
     }
 };

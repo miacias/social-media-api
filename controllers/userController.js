@@ -18,7 +18,7 @@ module.exports = {
     async getSingleUser(req, res) {
         try {
             const oneUser = await User.findOne({ _id: ObjectId(req.params.userId)})
-                .populate({ path: 'friends', select: '-__v' });
+                .populate({ path: 'friends', select: 'username email' }); // select filters out provided fields
             const oneFriend = await User.findOne({
                 _id: ObjectId(req.params.friendId)
             });
@@ -32,19 +32,15 @@ module.exports = {
     },
     async createUser(req, res) {
         try {
-            // if (req.params.friendId) {
-            //     const newFriend = new User({_id: ObjectId(req.params.friendId)});
-            // } else {
-                const newUser = new User(
-                    {
-                        username: req.body.username,
-                        email: req.body.email
-                    });
-                await newUser.save();
-                if (newUser) {
-                    res.status(200).json(newUser);
-                }
-            // }
+            const newUser = new User(
+                {
+                    username: req.body.username,
+                    email: req.body.email
+                });
+            await newUser.save();
+            if (newUser) {
+                res.status(200).json(newUser);
+            }
         } catch (err) {
             console.log(err);
             res.status(500).json(err, { message: 'Unable to create new user. Please try again.' });
@@ -81,10 +77,42 @@ module.exports = {
             res.status(500).json(err);
         }
     },
-    addFriend(req, res) {
-
+    async addFriend(req, res) {
+        try {
+            const addedFriend = await User.findOneAndUpdate({
+                _id: ObjectId(req.params.userId)
+            },
+            {
+                $addToSet: { friends: ObjectId(req.params.friendId)}
+            },
+            {
+                new: true
+            });
+            if (addedFriend) {
+                return res.status(200).json(addedFriend);
+            }
+        } catch (err) {
+            console.log(err);
+            res.status(500).json(err);
+        }
     },
-    removeFriend(req, res) {
-
+    async removeFriend(req, res) {
+        try {
+            const deletedFriend = await User.findOneAndUpdate({
+                _id: ObjectId(req.params.userId)
+            },
+            {
+                $pull: { friends: ObjectId(req.params.friendId)}
+            },
+            {
+                new: true
+            });
+            if (deletedFriend) {
+                return res.status(200).json(deletedFriend);
+            }
+        } catch (err) {
+            console.log(err);
+            res.status(500).json(err);
+        }
     }
 };
