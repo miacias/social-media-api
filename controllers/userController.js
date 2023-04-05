@@ -32,9 +32,9 @@ module.exports = {
     },
     async createUser(req, res) {
         try {
-            if (req.params.friendId) {
-                const newFriend = new User({_id: ObjectId(req.params.friendId)});
-            } else {
+            // if (req.params.friendId) {
+            //     const newFriend = new User({_id: ObjectId(req.params.friendId)});
+            // } else {
                 const newUser = new User(
                     {
                         username: req.body.username,
@@ -44,7 +44,7 @@ module.exports = {
                 if (newUser) {
                     res.status(200).json(newUser);
                 }
-            }
+            // }
         } catch (err) {
             console.log(err);
             res.status(500).json(err, { message: 'Unable to create new user. Please try again.' });

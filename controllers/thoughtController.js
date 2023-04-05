@@ -14,9 +14,9 @@ module.exports = {
             res.status(500).json(err);
         }
     },
-    async getSingleThought() {
+    async getSingleThought(req, res) {
         try {
-            const oneThought = await Thought.find({_id: req.params.thoughtId});
+            const oneThought = await Thought.find({_id: ObjectId(req.params.thoughtId)});
             if (oneThought) {
                 return res.status(200).json(oneThought);
             }
@@ -25,18 +25,22 @@ module.exports = {
             res.status(500).json(err);
         }
     },
-    async createThought() {
+    async createThought(req, res) {
         try {
             const newThought = new Thought({
                 thoughtText: req.body.thoughtText,
                 username: req.body.username
             });
+            await newThought.save();
+            if (newThought) {
+                return res.status(200).json(newThought);
+            }
         } catch (err) {
             console.log(err);
             res.status(500).json(err); 
         }
     },
-    async updateThought() {
+    async updateThought(req, res) {
         try {
 
         } catch (err) {
@@ -44,7 +48,7 @@ module.exports = {
             res.status(500).json(err); 
         }
     },
-    async deleteThought() {
+    async deleteThought(req, res) {
         try {
 
         } catch (err) {
