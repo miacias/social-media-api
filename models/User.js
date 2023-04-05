@@ -26,14 +26,15 @@ const userSchema = new Schema(
         friends: [
             {
                 type: Schema.Types.ObjectId,
-                ref: 'user' // refers back to itself
+                ref: 'user', // refers back to itself
+                // strictPopulate: false
             }
         ]
     },
     {
         toJSON: {
             getters: true,
-            virtuals: true
+            virtuals: true,
         }
     }
 );

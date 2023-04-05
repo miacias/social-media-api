@@ -13,7 +13,7 @@ const {
 router.route('/').get(getUsers).post(createUser);
 
 // route for /api/users/:userId
-router.route('/:userId').get(getSingleUser).delete(deleteUser);
+router.route('/:userId').get(getSingleUser).put(updateUser).delete(deleteUser);
 
 // route for /api/users/:userId/thoughts
 // router.route('/:userId/thoughts').post(addThought);
@@ -21,8 +21,7 @@ router.route('/:userId').get(getSingleUser).delete(deleteUser);
 // route for /api/users/:userId/thoughts/:thoughtId
 // router.route('/:userId/thoughts/:thoughtId').delete(removeThought);
 
-// BONUS
 // route for /api/users/:userId/friends/:friendId
-// router.route('/:userId').get(getSingleUser).post(createUser).delete(deleteUser);
+router.route('/:userId/friends/:friendId').get(getSingleUser).post(createUser).delete(deleteUser);
 
 module.exports = router;
