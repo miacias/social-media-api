@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, Types, model } = require('mongoose');
 
 // schema for User model
 const userSchema = new Schema(
@@ -26,21 +26,26 @@ const userSchema = new Schema(
         friends: [
             {
                 type: Schema.Types.ObjectId,
-                ref: 'user' // refers back to itself
+                ref: 'user', // refers back to itself
+                // strictPopulate: false
             }
         ]
     },
     {
         toJSON: {
-            getters: true
-        }
+            getters: true,
+            virtuals: true,
+        },
+        id: false
     }
 );
 
 // calculates total friends list number
 // acts as a virtual column but not stored directly in the schema
 userSchema.virtual('friendCount').get(function () {
-    return this.friends.length;
+    if (userSchema.friends) {
+        return this.friends.length;
+    }
 });
 
 // compiles a User model based on the schema
