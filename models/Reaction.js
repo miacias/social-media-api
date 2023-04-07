@@ -4,10 +4,6 @@ const { Schema, Types } = require('mongoose');
 // not a document model, thus needs an ID
 // reactions will be directly stored into Thoughts instead of its own model
 const reactionSchema = new Schema({
-    // reactionId: {
-    //     type: Schema.Types.ObjectId,
-    //     default: () => new Types.ObjectId()
-    // },
     reactionBody: {
         type: String,
         required: true,
