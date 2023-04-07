@@ -68,9 +68,13 @@ module.exports = {
     },
     async deleteUser(req, res) {
         try {
+            // deletes a user
             const deletedUser = await User.findOneAndDelete({ _id: ObjectId(req.params.userId) }, { rawResult: true });
-            if (deletedUser) {
-                return res.status(200).json(deletedUser);
+            // deletes the associated user's thoughts
+            const deletedUsername = deletedUser.value.username;
+            const deletedThoughtsByUser = await Thought.deleteMany({username: deletedUsername}, { rawResult: true });
+            if (deletedUser && deletedThoughtsByUser) {
+                return res.status(200).json({message: "User and associated thoughts deleted!"});
             }
         } catch (err) {
             console.log(err);
