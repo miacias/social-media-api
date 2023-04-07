@@ -16,7 +16,7 @@ module.exports = {
     },
     async getSingleThought(req, res) {
         try {
-            const oneThought = await Thought.find({_id: ObjectId(req.params.thoughtId)});
+            const oneThought = await Thought.find({ _id: ObjectId(req.params.thoughtId) });
             if (oneThought) {
                 return res.status(200).json(oneThought);
             }
@@ -35,17 +35,17 @@ module.exports = {
             const userThought = await User.findOneAndUpdate({
                 username: req.body.username
             },
-            {
-                $addToSet: {
-                    thoughts: newThought._id
-                }
-            });
+                {
+                    $addToSet: {
+                        thoughts: newThought._id
+                    }
+                });
             if (newThought && userThought) {
                 return res.status(200).json(newThought);
             }
         } catch (err) {
             console.log(err);
-            res.status(500).json(err); 
+            res.status(500).json(err);
         }
     },
     async updateThought(req, res) {
@@ -53,35 +53,35 @@ module.exports = {
             const updatedThought = await Thought.findOneAndUpdate({
                 _id: ObjectId(req.params.thoughtId)
             },
-            {
-                thoughtText: req.body.thoughtText,
-                username: req.body.username
-            },
-            {
-                new: true
-            });
+                {
+                    thoughtText: req.body.thoughtText,
+                    username: req.body.username
+                },
+                {
+                    new: true
+                });
             if (updatedThought) {
                 return res.status(200).json(updatedThought);
             }
         } catch (err) {
             console.log(err);
-            res.status(500).json(err); 
+            res.status(500).json(err);
         }
     },
     async deleteThought(req, res) {
         try {
-            const deletedThought = await Thought.findOneAndDelete({_id: ObjectId(req.params.thoughtId)}, { rawResult: true });
+            const deletedThought = await Thought.findOneAndDelete({ _id: ObjectId(req.params.thoughtId) }, { rawResult: true });
             if (deletedThought) {
                 return res.status(200).json(deletedThought);
             }
         } catch (err) {
             console.log(err);
-            res.status(500).json(err); 
+            res.status(500).json(err);
         }
     },
     async createReaction(req, res) {
         try {
-            const newReaction =  await Thought.findOneAndUpdate({
+            const newReaction = await Thought.findOneAndUpdate({
                 _id: ObjectId(req.params.thoughtId)
             },
             {
@@ -106,7 +106,7 @@ module.exports = {
                 _id: ObjectId(req.params.thoughtId)
             },
             {
-                $pull: { reactions: req.params.reactionId}
+                $pull: { reactions: req.params.reactionId }
             },
             {
                 new: true
