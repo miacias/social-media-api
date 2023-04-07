@@ -21,12 +21,13 @@ router.route('/:thoughtId')
     .delete(deleteThought);
 
 // route for /api/thoughts/:thoughtId/reactions
-// router.route('/:thoughtId/reactions')
+router.route('/:thoughtId/reactions')
     // .get();
+    .post(createReaction);
 
 // route for /api/thoughts/:thoughtId/reactions/:reactionId
 router.route('/:thoughtId/reactions/:reactionId')
-    .post(createReaction)
+    // .get()
     // .put()
     .delete(deleteReaction);
 
