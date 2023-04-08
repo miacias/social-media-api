@@ -25,7 +25,7 @@ Clone the repo do a local machine. With Node already installed, type into the te
 
 Once the server is running, open an API client of choice, such as Postman or Insomnia to interact with the data. It may be beneficial to reference the routes JS files for which routes are available. Send C.R.U.D. operations to the server to get started.
 
-[See demonstration of how it works here!]()
+[See demonstration of how it works here!](https://youtu.be/mVIbpNt4l_0)
 
 
 ## Contribution
